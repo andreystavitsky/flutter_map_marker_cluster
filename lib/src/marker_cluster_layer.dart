@@ -373,7 +373,7 @@ class _MarkerClusterLayerState extends State<MarkerClusterLayer>
   bool _boundsContainsMarker(MarkerNode marker) {
     var pixelPoint = widget.map.project(marker.point);
 
-    final width = marker.width - marker.anchor.left;
+    final width = (marker.anchor.left >= marker.width || marker.anchor.left <= 1.0) ? marker.width / 2 : marker.width - marker.anchor.left;
     final height = marker.height - marker.anchor.top;
 
     var sw = CustomPoint(pixelPoint.x + width, pixelPoint.y - height);
