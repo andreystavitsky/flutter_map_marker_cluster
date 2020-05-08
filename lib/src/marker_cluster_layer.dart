@@ -211,7 +211,7 @@ class _MarkerClusterLayerState extends State<MarkerClusterLayer>
     return AnimatedBuilder(
       animation: controller,
       child: GestureDetector(
-        behavior: HitTestBehavior.deferToChild,
+        behavior: HitTestBehavior.opaque,
         onTap: _onMarkerTap(marker),
         child: marker.builder(context),
       ),
