@@ -1,3 +1,16 @@
+## [0.3.1] - 31/08/2020
+
+- Removed extras property to marker
+- Added disableClusteringAtZoom property to MarkerClusterLayerOptions
+
+## [0.3.0] - 25/08/2020
+
+- Added extras property to marker
+
+## [0.2.9] - 25/08/2020
+
+- Upgraded flutter_map to 0.10.1+1
+
 ## [0.2.8] - 29/04/2019
 
 - Added marker popup
