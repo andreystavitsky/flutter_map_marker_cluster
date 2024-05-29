@@ -2,19 +2,19 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
-import 'package:flutter_map_marker_cluster/src/cluster_manager.dart';
-import 'package:flutter_map_marker_cluster/src/cluster_widget.dart';
-import 'package:flutter_map_marker_cluster/src/core/quick_hull.dart';
-import 'package:flutter_map_marker_cluster/src/core/spiderfy.dart';
-import 'package:flutter_map_marker_cluster/src/fade.dart';
-import 'package:flutter_map_marker_cluster/src/map_calculator.dart';
-import 'package:flutter_map_marker_cluster/src/map_widget.dart';
-import 'package:flutter_map_marker_cluster/src/marker_widget.dart';
-import 'package:flutter_map_marker_cluster/src/node/marker_node.dart';
-import 'package:flutter_map_marker_cluster/src/node/marker_or_cluster_node.dart';
-import 'package:flutter_map_marker_cluster/src/rotate.dart';
-import 'package:flutter_map_marker_cluster/src/translate.dart';
+import 'package:flutter_map_marker_cluster_no_popup/flutter_map_marker_cluster.dart';
+import 'package:flutter_map_marker_cluster_no_popup/src/cluster_manager.dart';
+import 'package:flutter_map_marker_cluster_no_popup/src/cluster_widget.dart';
+import 'package:flutter_map_marker_cluster_no_popup/src/core/quick_hull.dart';
+import 'package:flutter_map_marker_cluster_no_popup/src/core/spiderfy.dart';
+import 'package:flutter_map_marker_cluster_no_popup/src/fade.dart';
+import 'package:flutter_map_marker_cluster_no_popup/src/map_calculator.dart';
+import 'package:flutter_map_marker_cluster_no_popup/src/map_widget.dart';
+import 'package:flutter_map_marker_cluster_no_popup/src/marker_widget.dart';
+import 'package:flutter_map_marker_cluster_no_popup/src/node/marker_node.dart';
+import 'package:flutter_map_marker_cluster_no_popup/src/node/marker_or_cluster_node.dart';
+import 'package:flutter_map_marker_cluster_no_popup/src/rotate.dart';
+import 'package:flutter_map_marker_cluster_no_popup/src/translate.dart';
 import 'package:latlong2/latlong.dart';
 
 class MarkerClusterLayer extends StatefulWidget {
@@ -157,7 +157,6 @@ class _MarkerClusterLayerState extends State<MarkerClusterLayer>
 
   @override
   Widget build(BuildContext context) {
-    final popupOptions = widget.options.popupOptions;
     return Stack(
       children: [
         // Keep the layers in a MobileTransformStack
@@ -166,15 +165,6 @@ class _MarkerClusterLayerState extends State<MarkerClusterLayer>
             children: _buildMobileTransformStack(),
           ),
         ),
-        // Move the PopupLayer outside the MobileLayerTransformer since it has its own
-        if (popupOptions != null)
-          PopupLayer(
-            popupDisplayOptions: PopupDisplayOptions(
-              builder: popupOptions.popupBuilder,
-              animation: popupOptions.popupAnimation,
-              snap: popupOptions.popupSnap,
-            ),
-          )
       ],
     );
   }
@@ -203,7 +193,7 @@ class _MarkerClusterLayerState extends State<MarkerClusterLayer>
         onTap: _onMarkerTap(marker),
         onDoubleTap: _onMarkerDoubleTap(marker),
         onHover: (bool value) => _onMarkerHover(marker, value),
-        buildOnHover: widget.options.popupOptions?.buildPopupOnHover ?? false,
+        buildOnHover: false,
       ),
     );
   }
@@ -214,23 +204,6 @@ class _MarkerClusterLayerState extends State<MarkerClusterLayer>
     if (_zoomController.isAnimating ||
         _centerMarkerController.isAnimating ||
         _fitBoundController.isAnimating) return;
-
-    if (widget.options.popupOptions != null) {
-      final popupOptions = widget.options.popupOptions!;
-      enter
-          ? Future.delayed(
-              Duration(
-                  milliseconds: popupOptions.timeToShowPopupOnHover >= 0
-                      ? popupOptions.timeToShowPopupOnHover
-                      : 0), () {
-              popupOptions.markerTapBehavior.apply(
-                PopupSpec.wrap(marker.marker),
-                PopupState.maybeOf(context, listen: false)!,
-                popupOptions.popupController,
-              );
-            })
-          : popupOptions.popupController.hideAllPopups();
-    }
 
     if (widget.options.onMarkerTap != null) {
       enter
@@ -253,12 +226,6 @@ class _MarkerClusterLayerState extends State<MarkerClusterLayer>
             .map((markerNode) => markerNode.marker)
             .toList();
 
-        if (widget.options.popupOptions != null &&
-            markersGettingClustered != null) {
-          widget.options.popupOptions!.popupController.hidePopupsOnlyFor(
-            markersGettingClustered,
-          );
-        }
         if (widget.options.onMarkersClustered != null &&
             markersGettingClustered != null) {
           widget.options.onMarkersClustered!(markersGettingClustered);
@@ -276,8 +243,6 @@ class _MarkerClusterLayerState extends State<MarkerClusterLayer>
             .toList();
 
         if (markersGettingClustered != null) {
-          widget.options.popupOptions?.popupController
-              .hidePopupsOnlyFor(markersGettingClustered);
           widget.options.onMarkersClustered?.call(markersGettingClustered);
         }
 
@@ -447,9 +412,6 @@ class _MarkerClusterLayerState extends State<MarkerClusterLayer>
       }
     }
 
-    widget.options.popupOptions?.popupController.hidePopupsOnlyFor(
-      markersGettingClustered,
-    );
     widget.options.onMarkersClustered?.call(markersGettingClustered);
   }
 
@@ -723,15 +685,6 @@ class _MarkerClusterLayerState extends State<MarkerClusterLayer>
     return () {
       if (_animating) return;
 
-      if (widget.options.popupOptions != null) {
-        final popupOptions = widget.options.popupOptions!;
-        popupOptions.markerTapBehavior.apply(
-          PopupSpec.wrap(marker.marker),
-          PopupState.maybeOf(context, listen: false)!,
-          popupOptions.popupController,
-        );
-      }
-
       widget.options.onMarkerTap?.call(marker.marker);
 
       if (!widget.options.centerMarkerOnClick) return;
@@ -788,7 +741,7 @@ class _MarkerClusterLayerState extends State<MarkerClusterLayer>
             borderStrokeWidth: widget.options.polygonOptions.borderStrokeWidth,
             color: widget.options.polygonOptions.color,
             borderColor: widget.options.polygonOptions.borderColor,
-            isDotted: widget.options.polygonOptions.isDotted,
+            pattern: widget.options.polygonOptions.pattern,
           ),
         ]);
       });

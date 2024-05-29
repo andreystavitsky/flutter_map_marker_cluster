@@ -1,11 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_map_marker_cluster/src/core/util.dart' as util;
-import 'package:flutter_map_marker_cluster/src/map_calculator.dart';
-import 'package:flutter_map_marker_cluster/src/node/marker_cluster_node.dart';
-import 'package:flutter_map_marker_cluster/src/node/marker_node.dart';
-import 'package:flutter_map_marker_cluster/src/node/marker_or_cluster_node.dart';
+import 'package:flutter_map_marker_cluster_no_popup/src/core/util.dart' as util;
+import 'package:flutter_map_marker_cluster_no_popup/src/map_calculator.dart';
+import 'package:flutter_map_marker_cluster_no_popup/src/node/marker_cluster_node.dart';
+import 'package:flutter_map_marker_cluster_no_popup/src/node/marker_node.dart';
+import 'package:flutter_map_marker_cluster_no_popup/src/node/marker_or_cluster_node.dart';
 import 'package:latlong2/latlong.dart';
 
 @immutable

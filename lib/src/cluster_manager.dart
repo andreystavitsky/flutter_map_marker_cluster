@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map_marker_cluster/src/core/distance_grid.dart';
-import 'package:flutter_map_marker_cluster/src/map_calculator.dart';
-import 'package:flutter_map_marker_cluster/src/node/marker_cluster_node.dart';
-import 'package:flutter_map_marker_cluster/src/node/marker_node.dart';
-import 'package:flutter_map_marker_cluster/src/node/marker_or_cluster_node.dart';
+import 'package:flutter_map_marker_cluster_no_popup/src/core/distance_grid.dart';
+import 'package:flutter_map_marker_cluster_no_popup/src/map_calculator.dart';
+import 'package:flutter_map_marker_cluster_no_popup/src/node/marker_cluster_node.dart';
+import 'package:flutter_map_marker_cluster_no_popup/src/node/marker_node.dart';
+import 'package:flutter_map_marker_cluster_no_popup/src/node/marker_or_cluster_node.dart';
 
 class ClusterManager {
   final MapCalculator mapCalculator;

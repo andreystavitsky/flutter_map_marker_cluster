@@ -2,20 +2,19 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
-import 'package:flutter_map_marker_popup/extension_api.dart';
+import 'package:flutter_map_marker_cluster_no_popup/flutter_map_marker_cluster.dart';
 
 class PolygonOptions {
   final Color color;
   final double borderStrokeWidth;
   final Color borderColor;
-  final bool isDotted;
+  final StrokePattern pattern;
 
   const PolygonOptions({
     this.color = const Color(0xFF00FF00),
     this.borderStrokeWidth = 0.0,
     this.borderColor = const Color(0xFFFFFF00),
-    this.isDotted = false,
+    this.pattern = const StrokePattern.solid(),
   });
 }
 
@@ -45,54 +44,6 @@ class AnimationsOptions {
     this.fitBoundCurves = Curves.fastOutSlowIn,
     this.centerMarkerCurves = Curves.fastOutSlowIn,
   });
-}
-
-class PopupOptions {
-  /// Used to construct the popup.
-  final PopupBuilder popupBuilder;
-
-  /// If a PopupController is provided it can be used to programmatically show
-  /// and hide the popup.
-  final PopupController popupController;
-
-  /// Controls the position of the popup relative to the marker or popup.
-  final PopupSnap popupSnap;
-
-  /// Allows the use of an animation for showing/hiding popups. Defaults to no
-  /// animation.
-  final PopupAnimation? popupAnimation;
-
-  /// Whether or not the markers rotate counter clockwise to the map rotation,
-  /// defaults to false.
-  final bool markerRotate;
-
-  /// Set the popup building on hover rather than on tap.
-  final bool buildPopupOnHover;
-
-  /// Time (in milliseconds) required before the popup is shown when hovering. Set to 300 ms by default.
-  final int timeToShowPopupOnHover;
-
-  /// The default MarkerTapBehavior is
-  /// [MarkerTapBehavior.togglePopupAndHideRest] which will toggle the popup of
-  /// the tapped marker and hide all other popups. This is a sensible default
-  /// when you only want to show a single popup at a time but if you show
-  /// multiple popups you probably want to use [MarkerTapBehavior.togglePopup].
-  ///
-  /// For more information and other options see [MarkerTapBehavior].
-  final MarkerTapBehavior markerTapBehavior;
-
-  PopupOptions({
-    required this.popupBuilder,
-    this.popupSnap = PopupSnap.markerTop,
-    PopupController? popupController,
-    this.popupAnimation,
-    this.markerRotate = false,
-    MarkerTapBehavior? markerTapBehavior,
-    this.buildPopupOnHover = false,
-    this.timeToShowPopupOnHover = 300,
-  })  : markerTapBehavior =
-            markerTapBehavior ?? MarkerTapBehavior.togglePopupAndHideRest(),
-        popupController = popupController ?? PopupController();
 }
 
 typedef ClusterWidgetBuilder = Widget Function(
@@ -179,9 +130,6 @@ class MarkerClusterLayerOptions {
   ///Defaults to [false].
   final bool markerChildBehavior;
 
-  /// Popup's options that show when tapping markers or via the PopupController.
-  final PopupOptions? popupOptions;
-
   final EdgeInsets padding;
   final double maxZoom;
   final bool inside;
@@ -220,7 +168,6 @@ class MarkerClusterLayerOptions {
     this.onMarkerHoverExit,
     this.onClusterTap,
     this.onMarkersClustered,
-    this.popupOptions,
     this.markerChildBehavior = false,
   });
 }

@@ -1,4 +1,4 @@
-import 'package:flutter_map_marker_cluster/src/core/quick_hull.dart';
+import 'package:flutter_map_marker_cluster_no_popup/src/core/quick_hull.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong2/latlong.dart';
 
